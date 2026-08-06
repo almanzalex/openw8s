@@ -21,8 +21,10 @@ jobs:
           - os: macos-14
             target: aarch64-apple-darwin
             archive: openw8s-aarch64-apple-darwin
-          # macos-13 Intel runners are often unavailable/queued forever.
-          # Ship Apple Silicon + Linux first; add Intel when runners are healthy.
+          # Cross-compile Intel macOS from Apple Silicon runners (avoids flaky macos-13).
+          - os: macos-14
+            target: x86_64-apple-darwin
+            archive: openw8s-x86_64-apple-darwin
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -41,10 +43,13 @@ jobs:
           cp "$BIN" "$STAGE/openw8s"
           cp README.md LICENSE "$STAGE/"
           tar -czf "${STAGE}.tar.gz" "$STAGE"
+          shasum -a 256 "${STAGE}.tar.gz" | tee "${STAGE}.tar.gz.sha256"
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.archive }}
-          path: ${{ matrix.archive }}.tar.gz
+          path: |
+            ${{ matrix.archive }}.tar.gz
+            ${{ matrix.archive }}.tar.gz.sha256
 
   publish:
     needs: build
@@ -58,5 +63,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: dist/**/*.tar.gz
+          files: |
+            dist/**/*.tar.gz
+            dist/**/*.sha256
           fail_on_unmatched_files: true

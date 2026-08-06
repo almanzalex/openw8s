@@ -23,6 +23,13 @@ Release archives (when published):
 | --- | --- |
 | Linux x86_64 | `openw8s-x86_64-unknown-linux-gnu.tar.gz` |
 | macOS Apple Silicon | `openw8s-aarch64-apple-darwin.tar.gz` |
+| macOS Intel | `openw8s-x86_64-apple-darwin.tar.gz` |
+
+```bash
+# Homebrew
+brew tap almanzalex/openw8s https://github.com/almanzalex/openw8s
+brew install openw8s
+```
 
 ```bash
 # Manual binary install example (Apple Silicon)

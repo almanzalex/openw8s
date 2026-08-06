@@ -2,13 +2,12 @@
 
 ## Now / next
 - Keep CI green (CLI, web, dogfood)
-- Ship GitHub Release binaries (Linux x86_64 + Apple Silicon)
-- Stronger GGUF metadata (`general.parameter_count` / size labels)
+- GitHub Release binaries (Linux x86_64, Apple Silicon, Intel macOS)
 - Community manifest PRs via CONTRIBUTING + PR template
+- Homebrew formula in-repo (`Formula/openw8s.rb`)
 
 ## Later
-- Homebrew formula
-- Intel macOS release artifact (when runners are reliable)
+- Dedicated Homebrew tap packaging
 - Measured VRAM lock refinements (engine-aware probes)
 - Content-addressed manifest hashes / lockfiles
 

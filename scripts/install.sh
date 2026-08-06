@@ -38,8 +38,7 @@ install_from_release() {
   fi
   # Intel mac binaries may not ship yet — signal fallback.
   if [[ "${target}" == "x86_64-apple-darwin" ]]; then
-    echo "==> no Intel mac release artifact yet; falling back to cargo" >&2
-    return 1
+    echo "==> checking for Intel mac release artifact…"
   fi
   archive="openw8s-${target}"
   if [[ "${TAG}" == "latest" ]]; then
