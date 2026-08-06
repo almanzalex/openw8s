@@ -44,7 +44,9 @@ jobs:
         working-directory: .
         run: bash scripts/sync-catalog.sh
       - name: Install
-        run: npm ci
+        run: npm ci --include=optional
+      - name: Rebuild native CSS tooling
+        run: npm rebuild lightningcss || true
       - name: Lint
         run: npm run lint
       - name: Build

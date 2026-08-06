@@ -167,7 +167,7 @@ async fn build_profile(client: &reqwest::Client, info: &HfModelInfo) -> Result<M
     };
 
     let config = fetch_json_file(client, &info.id, "config.json").await.ok();
-    let (arch, config_params) = parse_config(config.as_ref());
+    let (mut arch, config_params) = parse_config(config.as_ref());
 
     let mut total_params = None;
 
@@ -206,6 +206,37 @@ async fn build_profile(client: &reqwest::Client, info: &HfModelInfo) -> Result<M
         total_params = params_from_names(
             std::iter::once(info.id.as_str()).chain(filenames.iter().copied()),
         );
+    }
+
+    // Stronger GGUF path: range-fetch metadata from a representative .gguf file.
+    let mut gguf_label: Option<String> = None;
+    if has_gguf {
+        if let Some(gguf_name) = pick_gguf_filename(&info.siblings) {
+            if let Ok(gguf) = crate::gguf::fetch_gguf_info(client, &info.id, gguf_name).await {
+                let hints = gguf.arch_hints();
+                if total_params.is_none() {
+                    total_params = gguf
+                        .parameter_count()
+                        .or_else(|| gguf.estimate_params_from_arch());
+                }
+                if arch.num_hidden_layers.is_none() {
+                    arch.num_hidden_layers = hints.num_hidden_layers;
+                }
+                if arch.hidden_size.is_none() {
+                    arch.hidden_size = hints.hidden_size;
+                }
+                if arch.num_attention_heads.is_none() {
+                    arch.num_attention_heads = hints.num_attention_heads;
+                }
+                if arch.num_key_value_heads.is_none() {
+                    arch.num_key_value_heads = hints.num_key_value_heads;
+                }
+                if arch.head_dim.is_none() {
+                    arch.head_dim = hints.head_dim;
+                }
+                gguf_label = Some(gguf.summary_label());
+            }
+        }
     }
 
     // Last resort: estimate from weight file sizes
@@ -251,6 +282,12 @@ async fn build_profile(client: &reqwest::Client, info: &HfModelInfo) -> Result<M
         .next()
         .unwrap_or(&info.id)
         .to_string();
+
+    let file_format = if let Some(label) = gguf_label {
+        label
+    } else {
+        file_format
+    };
 
     Ok(ModelProfile {
         repo_id: info.id.clone(),
@@ -410,6 +447,24 @@ fn params_from_card(card: &Value) -> Option<f64> {
         }
     }
     None
+}
+
+fn pick_gguf_filename(siblings: &[HfSibling]) -> Option<&str> {
+    // Prefer a mid-size quant if present, else the largest named .gguf
+    const PREFERRED: &[&str] = &["Q4_K_M", "Q4_K_S", "Q5_K_M", "Q4_0", "Q8_0"];
+    for tag in PREFERRED {
+        if let Some(s) = siblings.iter().find(|s| {
+            let n = s.rfilename.to_uppercase();
+            n.ends_with(".GGUF") && n.contains(tag)
+        }) {
+            return Some(s.rfilename.as_str());
+        }
+    }
+    siblings
+        .iter()
+        .filter(|s| s.rfilename.to_lowercase().ends_with(".gguf"))
+        .max_by_key(|s| s.size.unwrap_or(0))
+        .map(|s| s.rfilename.as_str())
 }
 
 fn parse_param_label(label: &str) -> Option<f64> {

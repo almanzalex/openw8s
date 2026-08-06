@@ -68,3 +68,5 @@ metadata:
 ## License
 
 Apache-2.0
+
+See [ROADMAP.md](./ROADMAP.md) for near-term work. Public web deployment is deferred (ways later).

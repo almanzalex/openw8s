@@ -1,3 +1,4 @@
+mod gguf;
 mod init;
 mod inspect;
 mod manifest;
