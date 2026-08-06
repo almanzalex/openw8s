@@ -80,13 +80,29 @@ impl GgufInfo {
 
     /// Prefer explicit parameter count when writers include it.
     pub fn parameter_count(&self) -> Option<f64> {
-        for key in [
+        const KEYS: &[&str] = &[
             "general.parameter_count",
             "general.param_count",
             "general.parameters",
-        ] {
-            if let Some(v) = self.get_u64(key) {
-                return Some(v as f64);
+            "general.size_label",
+        ];
+        for key in KEYS {
+            if let Some(v) = self.metadata.get(*key) {
+                if let Some(p) = meta_to_params(v) {
+                    return Some(p);
+                }
+            }
+        }
+        // Some exporters use arch-prefixed or alternate keys.
+        for (key, value) in &self.metadata {
+            let k = key.to_ascii_lowercase();
+            if k.ends_with("parameter_count")
+                || k.ends_with("param_count")
+                || k == "general.size_label"
+            {
+                if let Some(p) = meta_to_params(value) {
+                    return Some(p);
+                }
             }
         }
         None
@@ -228,6 +244,48 @@ pub async fn fetch_gguf_info(
     parse_gguf_prefix(&bytes).map_err(|e| anyhow!("{e} (file `{filename}`)"))
 }
 
+fn meta_to_params(value: &MetaValue) -> Option<f64> {
+    match value {
+        MetaValue::U64(n) => Some(*n as f64),
+        MetaValue::I64(n) if *n > 0 => Some(*n as f64),
+        MetaValue::F64(n) if *n > 0.0 => {
+            // Values < 1000 are usually billions (e.g. 7.0); larger are absolute counts.
+            Some(if *n < 1000.0 { *n * 1e9 } else { *n })
+        }
+        MetaValue::String(s) => parse_size_label(s),
+        _ => None,
+    }
+}
+
+fn parse_size_label(label: &str) -> Option<f64> {
+    let cleaned = label.trim().to_uppercase().replace(' ', "");
+    // Accept bare labels ("7B") and noisy labels ("7.2B Q4_K_M").
+    let mut token = String::new();
+    for ch in cleaned.chars() {
+        if ch.is_ascii_digit() || ch == '.' || matches!(ch, 'B' | 'M' | 'T') {
+            token.push(ch);
+            if matches!(ch, 'B' | 'M' | 'T') {
+                break;
+            }
+        } else if !token.is_empty() {
+            break;
+        }
+    }
+    if token.is_empty() {
+        return None;
+    }
+    let (num_str, mult) = if let Some(rest) = token.strip_suffix('B') {
+        (rest, 1e9_f64)
+    } else if let Some(rest) = token.strip_suffix('M') {
+        (rest, 1e6_f64)
+    } else if let Some(rest) = token.strip_suffix('T') {
+        (rest, 1e12_f64)
+    } else {
+        return token.parse::<f64>().ok();
+    };
+    num_str.parse::<f64>().ok().map(|n| n * mult)
+}
+
 fn read_u32(cur: &mut Cursor<&[u8]>) -> Result<u32> {
     let mut buf = [0u8; 4];
     read_exact(cur, &mut buf)?;
@@ -342,5 +400,22 @@ mod tests {
     #[test]
     fn rejects_bad_magic() {
         assert!(parse_gguf_prefix(&[0, 1, 2, 3, 4, 5, 6, 7]).is_err());
+    }
+
+    #[test]
+    fn parses_size_labels() {
+        assert_eq!(parse_size_label("7B"), Some(7e9));
+        assert_eq!(parse_size_label("1.1B"), Some(1.1e9));
+        assert_eq!(parse_size_label("7.2B-Q4_K_M"), Some(7.2e9));
+    }
+
+    #[test]
+    fn parameter_count_prefers_explicit_u64() {
+        let mut info = GgufInfo::default();
+        info.metadata.insert(
+            "general.parameter_count".into(),
+            MetaValue::U64(1_100_000_000),
+        );
+        assert_eq!(info.parameter_count(), Some(1_100_000_000.0));
     }
 }

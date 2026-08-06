@@ -2,13 +2,13 @@
 
 ## Now / next
 - Keep CI green (CLI, web, dogfood)
-- Prebuilt CLI binaries via GitHub Releases
-- Stronger GGUF metadata (parse headers, not just filenames)
-- Better lineage visualization in the local/dev registry UI
-- Community PR template for seed manifests
+- Ship GitHub Release binaries (Linux x86_64 + Apple Silicon)
+- Stronger GGUF metadata (`general.parameter_count` / size labels)
+- Community manifest PRs via CONTRIBUTING + PR template
 
 ## Later
 - Homebrew formula
+- Intel macOS release artifact (when runners are reliable)
 - Measured VRAM lock refinements (engine-aware probes)
 - Content-addressed manifest hashes / lockfiles
 
