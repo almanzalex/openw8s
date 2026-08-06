@@ -1,0 +1,23 @@
+# Community example — Gemma 2 2B Instruct via Ollama (laptop-friendly)
+version: "0.1"
+metadata:
+  name: "Gemma-2-2B-IT-Ollama"
+  base_model: "google/gemma-2-2b-it"
+  lineage:
+    kind: quantize_of
+    parent: "google/gemma-2-2b-it"
+  parent_branch: "google/gemma-2-2b-it"
+  author: "community"
+  license: "gemma"
+
+hardware:
+  min_vram_gb: 3
+  recommended_vram_gb: 6
+  quantization: "GGUF-Q4_K_M"
+  context_length: 8192
+
+runtime:
+  engine: "ollama"
+  command: >
+    bash scripts/ollama-generate.sh gemma2:2b
+    "What is 2+2? Reply with only the number."
