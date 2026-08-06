@@ -12,35 +12,29 @@
 class Openw8s < Formula
   desc "Open Weights Spec CLI — inspect models, validate manifests, run environments"
   homepage "https://github.com/almanzalex/openw8s"
-  version "0.1.2"
+  version "0.1.3"
   license "Apache-2.0"
 
   on_macos do
     on_arm do
-      url "https://github.com/almanzalex/openw8s/releases/download/v0.1.2/openw8s-aarch64-apple-darwin.tar.gz"
-      sha256 "d5ece1a08ee9f2a75b604c9eceede417a0890793d9f019fea15d9254d7b61043"
+      url "https://github.com/almanzalex/openw8s/releases/download/v0.1.3/openw8s-aarch64-apple-darwin.tar.gz"
+      sha256 "a4da26dd2e530c8004a1fd1ae89e9174e01f17f317f9ede8a44f97a522aeae69"
     end
     on_intel do
-      # Prefer source build until the Intel binary release is confirmed.
-      depends_on "rust" => :build
-      url "https://github.com/almanzalex/openw8s/archive/refs/tags/v0.1.2.tar.gz"
-      sha256 "12ec64420e8e73bd1a1f936d6f8f04c7ebd3ffd9f49ef3df42d198cc132b48ca"
+      url "https://github.com/almanzalex/openw8s/releases/download/v0.1.3/openw8s-x86_64-apple-darwin.tar.gz"
+      sha256 "4205836ad41d30461cee4cff8988f503fa977fcb2af49dabdb3bf47d9f257ab2"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/almanzalex/openw8s/releases/download/v0.1.2/openw8s-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "1488b78c1357b4a8ebdb9882e70b7b59d73fce7d43df8d2b27f12d2a49b906ac"
+      url "https://github.com/almanzalex/openw8s/releases/download/v0.1.3/openw8s-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "1f6fd080a4a1918bd88089989d93ea6cc3709fdf568bfba63d29cb4c8de40f14"
     end
   end
 
   def install
-    if build.head? || (OS.mac? && Hardware::CPU.intel?)
-      system "cargo", "install", "--locked", "--root", prefix, "--path", "crates/openw8s-cli"
-    else
-      bin.install "openw8s"
-    end
+    bin.install "openw8s"
   end
 
   test do
