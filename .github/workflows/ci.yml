@@ -44,9 +44,16 @@ jobs:
         working-directory: .
         run: bash scripts/sync-catalog.sh
       - name: Install
-        run: npm ci --include=optional
-      - name: Rebuild native CSS tooling
-        run: npm rebuild lightningcss || true
+        run: |
+          # Lockfile may omit host-specific optional natives (generated on macOS).
+          # Fresh install on the runner so lightningcss/oxide resolve for linux.
+          rm -rf node_modules
+          npm install
+      - name: Ensure linux CSS natives
+        run: |
+          npm install --no-save \
+            lightningcss-linux-x64-gnu \
+            @tailwindcss/oxide-linux-x64-gnu || true
       - name: Lint
         run: npm run lint
       - name: Build
