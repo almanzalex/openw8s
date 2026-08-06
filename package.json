@@ -1,0 +1,14 @@
+{
+  "name": "openw8s",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=web",
+    "build:web": "bash scripts/sync-catalog.sh && npm run build --workspace=web",
+    "lint:web": "npm run lint --workspace=web",
+    "sync-catalog": "bash scripts/sync-catalog.sh",
+    "dogfood": "bash scripts/dogfood.sh"
+  }
+}

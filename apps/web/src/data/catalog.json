@@ -1,0 +1,181 @@
+[
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "Llama-3.1-8B-Instruct-Ollama",
+      "base_model": "meta-llama/Llama-3.1-8B-Instruct",
+      "author": "community",
+      "license": "llama3.1",
+      "parent_branch": "meta-llama/Llama-3.1-8B-Instruct",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 6,
+      "recommended_vram_gb": 8,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 8192
+    },
+    "runtime": {
+      "engine": "ollama",
+      "command": "ollama run llama3.1:8b-instruct-q4_K_M"
+    },
+    "evals": {
+      "mmlu": 68.4
+    },
+    "slug": "llama31-8b-ollama"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "Llama-3.2-3B-Ollama-Laptop",
+      "base_model": "meta-llama/Llama-3.2-3B-Instruct",
+      "author": "local",
+      "license": "llama3.2",
+      "parent_branch": "meta-llama/Llama-3.2-3B-Instruct",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "meta-llama/Llama-3.2-3B-Instruct"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 2,
+      "recommended_vram_gb": 4,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 8192
+    },
+    "runtime": {
+      "engine": "ollama",
+      "command": "bash scripts/ollama-generate.sh llama3.2:3b \"What is 2+2? Reply with only the number.\""
+    },
+    "slug": "llama32-3b-ollama-laptop"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "Mistral-Nemo-Instruct-2407-llama.cpp",
+      "base_model": "mistralai/Mistral-Nemo-Instruct-2407",
+      "author": "community",
+      "license": "apache-2.0",
+      "parent_branch": "mistralai/Mistral-Nemo-Instruct-2407",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "mistralai/Mistral-Nemo-Instruct-2407"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 8,
+      "recommended_vram_gb": 12,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 32768
+    },
+    "runtime": {
+      "engine": "llamacpp",
+      "command": "llama-server -m mistral-nemo-instruct-q4_k_m.gguf -c 32768 -ngl 99"
+    },
+    "slug": "mistral-nemo-llamacpp"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "Phi-3.5-mini-instruct-Ollama",
+      "base_model": "microsoft/Phi-3.5-mini-instruct",
+      "author": "community",
+      "license": "mit",
+      "parent_branch": "microsoft/Phi-3.5-mini-instruct",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "microsoft/Phi-3.5-mini-instruct"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 4,
+      "recommended_vram_gb": 6,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 8192
+    },
+    "runtime": {
+      "engine": "ollama",
+      "command": "ollama run phi3.5:3.8b"
+    },
+    "slug": "phi35-mini-ollama"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "Qwen2.5-7B-Instruct-vLLM",
+      "base_model": "Qwen/Qwen2.5-7B-Instruct",
+      "author": "community",
+      "license": "apache-2.0",
+      "lineage": {
+        "kind": "base"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 16,
+      "recommended_vram_gb": 24,
+      "quantization": "FP16",
+      "context_length": 32768
+    },
+    "runtime": {
+      "engine": "vllm",
+      "command": "vllm serve Qwen/Qwen2.5-7B-Instruct --max-model-len 32768 --gpu-memory-utilization 0.90"
+    },
+    "slug": "qwen25-7b-vllm"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "Qwen2.5-Coder-32B-Instruct-vLLM",
+      "base_model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "author": "community",
+      "license": "apache-2.0",
+      "parent_branch": "Qwen/Qwen2.5-32B-Instruct",
+      "lineage": {
+        "kind": "finetune_of",
+        "parent": "Qwen/Qwen2.5-32B-Instruct"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 24,
+      "recommended_vram_gb": 32,
+      "quantization": "INT4",
+      "context_length": 16384
+    },
+    "runtime": {
+      "engine": "vllm",
+      "command": "vllm serve Qwen/Qwen2.5-Coder-32B-Instruct --quantization awq --max-model-len 16384 --gpu-memory-utilization 0.95 evals: humaneval: 84.1 gsm8k: 91.2"
+    },
+    "evals": {
+      "humaneval": 84.1
+    },
+    "slug": "qwen25-coder-32b-vllm"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "TinyLlama-1.1B-Chat-GGUF-llama.cpp",
+      "base_model": "TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF",
+      "author": "community",
+      "license": "apache-2.0",
+      "parent_branch": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 2,
+      "recommended_vram_gb": 4,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 2048
+    },
+    "runtime": {
+      "engine": "llamacpp",
+      "command": "llama-server -m tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf -c 2048 -ngl 99"
+    },
+    "slug": "tinyllama-gguf-llamacpp"
+  }
+]

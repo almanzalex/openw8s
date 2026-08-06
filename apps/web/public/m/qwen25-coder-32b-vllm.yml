@@ -1,0 +1,29 @@
+# Seed catalog manifest — Qwen2.5 Coder 32B on vLLM (AWQ / INT4)
+version: "0.1"
+metadata:
+  name: "Qwen2.5-Coder-32B-Instruct-vLLM"
+  base_model: "Qwen/Qwen2.5-Coder-32B-Instruct"
+  lineage:
+    kind: finetune_of
+    parent: "Qwen/Qwen2.5-32B-Instruct"
+  parent_branch: "Qwen/Qwen2.5-32B-Instruct"
+  author: "community"
+  license: "apache-2.0"
+
+hardware:
+  min_vram_gb: 24
+  recommended_vram_gb: 32
+  quantization: "INT4"
+  context_length: 16384
+
+runtime:
+  engine: "vllm"
+  command: >
+    vllm serve Qwen/Qwen2.5-Coder-32B-Instruct
+    --quantization awq
+    --max-model-len 16384
+    --gpu-memory-utilization 0.95
+
+evals:
+  humaneval: 84.1
+  gsm8k: 91.2

@@ -1,0 +1,21 @@
+# Seed catalog — Phi-3.5 mini via Ollama (easy laptop dogfood)
+version: "0.1"
+metadata:
+  name: "Phi-3.5-mini-instruct-Ollama"
+  base_model: "microsoft/Phi-3.5-mini-instruct"
+  lineage:
+    kind: quantize_of
+    parent: "microsoft/Phi-3.5-mini-instruct"
+  parent_branch: "microsoft/Phi-3.5-mini-instruct"
+  author: "community"
+  license: "mit"
+
+hardware:
+  min_vram_gb: 4
+  recommended_vram_gb: 6
+  quantization: "GGUF-Q4_K_M"
+  context_length: 8192
+
+runtime:
+  engine: "ollama"
+  command: "ollama run phi3.5:3.8b"

@@ -1,0 +1,22 @@
+# Seed catalog — Qwen2.5 7B base instruct on vLLM (FP16 laptop/desktop)
+version: "0.1"
+metadata:
+  name: "Qwen2.5-7B-Instruct-vLLM"
+  base_model: "Qwen/Qwen2.5-7B-Instruct"
+  lineage:
+    kind: base
+  author: "community"
+  license: "apache-2.0"
+
+hardware:
+  min_vram_gb: 16
+  recommended_vram_gb: 24
+  quantization: "FP16"
+  context_length: 32768
+
+runtime:
+  engine: "vllm"
+  command: >
+    vllm serve Qwen/Qwen2.5-7B-Instruct
+    --max-model-len 32768
+    --gpu-memory-utilization 0.90

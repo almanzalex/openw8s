@@ -1,0 +1,23 @@
+# Seed catalog — TinyLlama GGUF via llama.cpp (inspect/dogfood GGUF path)
+version: "0.1"
+metadata:
+  name: "TinyLlama-1.1B-Chat-GGUF-llama.cpp"
+  base_model: "TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF"
+  lineage:
+    kind: quantize_of
+    parent: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+  parent_branch: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+  author: "community"
+  license: "apache-2.0"
+
+hardware:
+  min_vram_gb: 2
+  recommended_vram_gb: 4
+  quantization: "GGUF-Q4_K_M"
+  context_length: 2048
+
+runtime:
+  engine: "llamacpp"
+  command: >
+    llama-server -m tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+    -c 2048 -ngl 99

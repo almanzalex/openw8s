@@ -1,0 +1,3 @@
+# Keep Cargo artifacts in the workspace (avoid sandbox/cache redirects).
+[build]
+target-dir = "target"

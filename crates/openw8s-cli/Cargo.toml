@@ -1,0 +1,23 @@
+[package]
+name = "openw8s"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "CLI for inspecting open-weight model VRAM needs and running .openw8s.yml manifests"
+
+[[bin]]
+name = "openw8s"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+colored.workspace = true
+comfy-table.workspace = true
+dialoguer.workspace = true
+indicatif.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+tokio.workspace = true

@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = ["crates/openw8s-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/almanzalex/openw8s"
+
+[workspace.dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+colored = "2"
+comfy-table = "7"
+dialoguer = "0.11"
+indicatif = "0.17"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "process"] }
+

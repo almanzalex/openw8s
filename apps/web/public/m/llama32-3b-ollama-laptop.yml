@@ -1,0 +1,23 @@
+# Local laptop dogfood — portable ollama one-shot via scripts/ollama-generate.sh
+version: "0.1"
+metadata:
+  name: "Llama-3.2-3B-Ollama-Laptop"
+  base_model: "meta-llama/Llama-3.2-3B-Instruct"
+  lineage:
+    kind: quantize_of
+    parent: "meta-llama/Llama-3.2-3B-Instruct"
+  parent_branch: "meta-llama/Llama-3.2-3B-Instruct"
+  author: "local"
+  license: "llama3.2"
+
+hardware:
+  min_vram_gb: 2
+  recommended_vram_gb: 4
+  quantization: "GGUF-Q4_K_M"
+  context_length: 8192
+
+runtime:
+  engine: "ollama"
+  command: >
+    bash scripts/ollama-generate.sh llama3.2:3b
+    "What is 2+2? Reply with only the number."

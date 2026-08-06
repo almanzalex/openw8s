@@ -1,0 +1,23 @@
+# Seed catalog — Mistral Nemo on llama.cpp (GGUF Q4, long context)
+version: "0.1"
+metadata:
+  name: "Mistral-Nemo-Instruct-2407-llama.cpp"
+  base_model: "mistralai/Mistral-Nemo-Instruct-2407"
+  lineage:
+    kind: quantize_of
+    parent: "mistralai/Mistral-Nemo-Instruct-2407"
+  parent_branch: "mistralai/Mistral-Nemo-Instruct-2407"
+  author: "community"
+  license: "apache-2.0"
+
+hardware:
+  min_vram_gb: 8
+  recommended_vram_gb: 12
+  quantization: "GGUF-Q4_K_M"
+  context_length: 32768
+
+runtime:
+  engine: "llamacpp"
+  command: >
+    llama-server -m mistral-nemo-instruct-q4_k_m.gguf
+    -c 32768 -ngl 99

@@ -1,0 +1,24 @@
+# Seed catalog — Llama 3.1 8B via Ollama (GGUF Q4)
+version: "0.1"
+metadata:
+  name: "Llama-3.1-8B-Instruct-Ollama"
+  base_model: "meta-llama/Llama-3.1-8B-Instruct"
+  lineage:
+    kind: quantize_of
+    parent: "meta-llama/Llama-3.1-8B-Instruct"
+  parent_branch: "meta-llama/Llama-3.1-8B-Instruct"
+  author: "community"
+  license: "llama3.1"
+
+hardware:
+  min_vram_gb: 6
+  recommended_vram_gb: 8
+  quantization: "GGUF-Q4_K_M"
+  context_length: 8192
+
+runtime:
+  engine: "ollama"
+  command: "ollama run llama3.1:8b-instruct-q4_K_M"
+
+evals:
+  mmlu: 68.4

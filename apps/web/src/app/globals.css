@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07090c;
+  --foreground: #e8edf2;
+  --muted: #8b98a8;
+  --panel: #0e1319;
+  --panel-2: #121820;
+  --border: #1e2833;
+  --accent: #3dde9a;
+  --accent-dim: #1a8f5c;
+  --warn: #f0c14a;
+  --danger: #ff6b6b;
+  --grid: rgba(61, 222, 154, 0.06);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-ibm-sans);
+  --font-mono: var(--font-ibm-mono);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(61, 222, 154, 0.08), transparent),
+    linear-gradient(180deg, #07090c 0%, #0a0e14 100%);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: var(--font-ibm-sans), ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(61, 222, 154, 0.25);
+  color: #fff;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.terminal-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: #2a3544;
+  border-radius: 4px;
+}
