@@ -1,0 +1,23 @@
+# Community example — DeepSeek-R1 Distill Qwen 1.5B via Ollama (reasoning on a laptop)
+version: "0.1"
+metadata:
+  name: "DeepSeek-R1-Distill-Qwen-1.5B-Ollama"
+  base_model: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+  lineage:
+    kind: quantize_of
+    parent: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+  parent_branch: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+  author: "community"
+  license: "mit"
+
+hardware:
+  min_vram_gb: 2
+  recommended_vram_gb: 4
+  quantization: "GGUF-Q4_K_M"
+  context_length: 8192
+
+runtime:
+  engine: "ollama"
+  command: >
+    bash scripts/ollama-generate.sh deepseek-r1:1.5b
+    "What is 2+2? Reply with only the number."

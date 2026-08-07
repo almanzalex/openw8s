@@ -1,13 +1,14 @@
 # typed: false
 # frozen_string_literal: true
 
-# Homebrew formula for openw8s.
+# Homebrew formula for openw8s (kept in-repo for reference).
+# Preferred install via the dedicated tap:
 #
-#   brew install --formula Formula/openw8s.rb
-#
-# Optional tap:
-#   brew tap almanzalex/openw8s https://github.com/almanzalex/openw8s
+#   brew tap almanzalex/openw8s
 #   brew install openw8s
+#
+# Or path-install from a clone:
+#   brew install --formula Formula/openw8s.rb
 
 class Openw8s < Formula
   desc "Open Weights Spec CLI — inspect models, validate manifests, run environments"

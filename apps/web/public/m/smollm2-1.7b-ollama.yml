@@ -1,0 +1,23 @@
+# Community example — SmolLM2 1.7B Instruct via Ollama (tiny laptop)
+version: "0.1"
+metadata:
+  name: "SmolLM2-1.7B-Instruct-Ollama"
+  base_model: "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+  lineage:
+    kind: quantize_of
+    parent: "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+  parent_branch: "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+  author: "community"
+  license: "apache-2.0"
+
+hardware:
+  min_vram_gb: 2
+  recommended_vram_gb: 4
+  quantization: "GGUF-Q4_K_M"
+  context_length: 8192
+
+runtime:
+  engine: "ollama"
+  command: >
+    bash scripts/ollama-generate.sh smollm2:1.7b
+    "What is 2+2? Reply with only the number."

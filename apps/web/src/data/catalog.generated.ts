@@ -5,6 +5,31 @@ export const SAMPLE_MANIFESTS = [
   {
     "version": "0.1",
     "metadata": {
+      "name": "DeepSeek-R1-Distill-Qwen-1.5B-Ollama",
+      "base_model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "author": "community",
+      "license": "mit",
+      "parent_branch": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 2,
+      "recommended_vram_gb": 4,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 8192
+    },
+    "runtime": {
+      "engine": "ollama",
+      "command": "bash scripts/ollama-generate.sh deepseek-r1:1.5b \"What is 2+2? Reply with only the number.\""
+    },
+    "slug": "deepseek-r1-1.5b-ollama"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
       "name": "Gemma-2-2B-IT-Ollama",
       "base_model": "google/gemma-2-2b-it",
       "author": "community",
@@ -54,6 +79,31 @@ export const SAMPLE_MANIFESTS = [
       "mmlu": 68.4
     },
     "slug": "llama31-8b-ollama"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "Llama-3.2-1B-Instruct-Ollama",
+      "base_model": "meta-llama/Llama-3.2-1B-Instruct",
+      "author": "community",
+      "license": "llama3.2",
+      "parent_branch": "meta-llama/Llama-3.2-1B-Instruct",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "meta-llama/Llama-3.2-1B-Instruct"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 1,
+      "recommended_vram_gb": 2,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 8192
+    },
+    "runtime": {
+      "engine": "ollama",
+      "command": "bash scripts/ollama-generate.sh llama3.2:1b \"What is 2+2? Reply with only the number.\""
+    },
+    "slug": "llama32-1b-ollama"
   },
   {
     "version": "0.1",
@@ -180,6 +230,31 @@ export const SAMPLE_MANIFESTS = [
       "humaneval": 84.1
     },
     "slug": "qwen25-coder-32b-vllm"
+  },
+  {
+    "version": "0.1",
+    "metadata": {
+      "name": "SmolLM2-1.7B-Instruct-Ollama",
+      "base_model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "author": "community",
+      "license": "apache-2.0",
+      "parent_branch": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "lineage": {
+        "kind": "quantize_of",
+        "parent": "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+      }
+    },
+    "hardware": {
+      "min_vram_gb": 2,
+      "recommended_vram_gb": 4,
+      "quantization": "GGUF-Q4_K_M",
+      "context_length": 8192
+    },
+    "runtime": {
+      "engine": "ollama",
+      "command": "bash scripts/ollama-generate.sh smollm2:1.7b \"What is 2+2? Reply with only the number.\""
+    },
+    "slug": "smollm2-1.7b-ollama"
   },
   {
     "version": "0.1",
